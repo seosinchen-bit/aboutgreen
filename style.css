@@ -78,3 +78,516 @@ body.mode-heavy #defineImage{filter:saturate(.72) brightness(.68) contrast(1.2)}
 @media(max-width:900px){
   .topbar nav{display:none}.section{padding:95px 6vw}.section-head{display:block}.section h2{text-align:left;margin-top:30px}.observe-stage,.quiz-result{grid-template-columns:1fr}.quiz-options{grid-template-columns:1fr}.mood-grid{grid-template-columns:1fr 1fr}.observe-copy{padding:0}.archive-grid{grid-template-columns:1fr 1fr}.archive-grid img{grid-column:span 1!important;height:190px}.hero{padding:0 6vw}.hero h1{font-size:18vw}.hero-sub{font-size:14px}.question-card{padding:35px 7vw}.pick-lead{margin-top:0}}
 @media(max-width:560px){.mood-grid{grid-template-columns:1fr}.archive-grid{grid-template-columns:1fr}.archive-grid img{height:240px}.hero{min-height:600px}.hero h1{font-size:20vw}.observe-foot{display:block;line-height:2}.picked-result{display:block}.picked-result strong{display:block;margin-top:8px}}
+/* =====================================================
+   05 / TRACE
+===================================================== */
+
+.trace {
+  background: #10150f;
+  position: relative;
+  overflow: hidden;
+}
+
+.trace-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 50px 0 35px;
+}
+
+.trace-intro p {
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.trace-intro .tiny {
+  color: var(--muted);
+  text-align: right;
+}
+
+.trace-board {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 550px;
+  overflow: hidden;
+  background: #080b07;
+  border: 1px solid rgba(233,234,223,.15);
+  cursor: crosshair;
+}
+
+.trace-photo {
+  position: absolute;
+  overflow: hidden;
+  transition:
+    transform .7s cubic-bezier(.2,.8,.2,1),
+    filter .7s ease;
+}
+
+.trace-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(.7) brightness(.65);
+  transition: filter .7s ease;
+}
+
+.photo-a {
+  width: 46%;
+  height: 60%;
+  left: 5%;
+  top: 9%;
+  transform: rotate(-4deg);
+}
+
+.photo-b {
+  width: 43%;
+  height: 55%;
+  right: 7%;
+  top: 7%;
+  transform: rotate(5deg);
+}
+
+.photo-c {
+  width: 50%;
+  height: 56%;
+  left: 25%;
+  bottom: 3%;
+  transform: rotate(-1deg);
+}
+
+.trace-board:hover .photo-a {
+  transform: rotate(-7deg) translate(-15px,-10px);
+}
+
+.trace-board:hover .photo-b {
+  transform: rotate(8deg) translate(15px,-5px);
+}
+
+.trace-board:hover .photo-c {
+  transform: rotate(1deg) translateY(10px);
+}
+
+.trace-board:hover .trace-photo img {
+  filter: saturate(.9) brightness(.72);
+}
+
+#traceCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.trace-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 10;
+
+  font: 12px 'DM Mono', monospace;
+  letter-spacing: .12em;
+
+  text-align: center;
+  color: rgba(233,234,223,.65);
+
+  pointer-events: none;
+
+  transition: opacity .3s;
+}
+
+.trace-center span {
+  display: block;
+  margin-top: 8px;
+  font-family: Manrope, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0;
+  opacity: .55;
+}
+
+.trace-board:has(#traceCanvas:hover) .trace-center {
+  opacity: .12;
+}
+
+.trace-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  color: var(--muted);
+}
+
+.trace-actions .outline-btn {
+  margin: 0;
+}
+
+
+/* =====================================================
+   06 / AFTERIMAGE
+===================================================== */
+
+.afterimage {
+  position: relative;
+  height: 100vh;
+  min-height: 700px;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(70,100,55,.22),
+      transparent 45%
+    ),
+    #050704;
+}
+
+.after-bg {
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(120,160,80,.10),
+      transparent 50%
+    );
+
+  pointer-events: none;
+}
+
+.after-photo {
+  position: absolute;
+  overflow: hidden;
+
+  opacity: .25;
+
+  transition:
+    transform 1.2s cubic-bezier(.2,.8,.2,1),
+    opacity 1.2s ease;
+}
+
+.after-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  filter:
+    grayscale(.25)
+    saturate(.65)
+    brightness(.55);
+}
+
+.after-photo-1 {
+  width: 28vw;
+  height: 38vh;
+
+  left: 8vw;
+  top: 15vh;
+
+  transform: rotate(-7deg);
+}
+
+.after-photo-2 {
+  width: 25vw;
+  height: 42vh;
+
+  right: 8vw;
+  top: 10vh;
+
+  transform: rotate(6deg);
+}
+
+.after-photo-3 {
+  width: 31vw;
+  height: 35vh;
+
+  left: 35vw;
+  bottom: 8vh;
+
+  transform: rotate(-2deg);
+}
+
+.afterimage:hover .after-photo-1 {
+  transform:
+    translate(-25px,10px)
+    rotate(-10deg);
+
+  opacity: .42;
+}
+
+.afterimage:hover .after-photo-2 {
+  transform:
+    translate(25px,-10px)
+    rotate(9deg);
+
+  opacity: .42;
+}
+
+.afterimage:hover .after-photo-3 {
+  transform:
+    translateY(20px)
+    rotate(2deg);
+
+  opacity: .38;
+}
+
+.after-content {
+  position: relative;
+  z-index: 10;
+
+  text-align: center;
+
+  max-width: 800px;
+}
+
+.after-content .eyebrow {
+  margin-bottom: 20px;
+}
+
+.after-small {
+  font-size: 15px;
+  line-height: 1.8;
+
+  opacity: .75;
+}
+
+.after-content h2 {
+  font-size: clamp(80px,15vw,220px);
+
+  line-height: .75;
+
+  letter-spacing: -.09em;
+
+  margin: 40px 0 35px;
+
+  font-weight: 600;
+}
+
+.after-content h2 em {
+  font-style: normal;
+
+  color: var(--accent);
+
+  text-shadow:
+    0 0 60px var(--accent);
+}
+
+.after-en {
+  font:
+    12px 'DM Mono',
+    monospace;
+
+  line-height: 1.8;
+
+  opacity: .6;
+}
+
+.grow-btn {
+  margin-top: 30px;
+
+  background: transparent;
+
+  border: 1px solid rgba(233,234,223,.45);
+
+  padding: 13px 18px;
+
+  cursor: pointer;
+
+  display: inline-flex;
+
+  gap: 50px;
+
+  align-items: center;
+
+  transition: .3s;
+}
+
+.grow-btn:hover {
+  background: var(--cream);
+  color: #080a07;
+}
+
+.grow-btn i {
+  font-style: normal;
+}
+
+.grow-field {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  z-index: 20;
+}
+
+.seed {
+  position: absolute;
+
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  background: var(--accent);
+
+  box-shadow:
+    0 0 40px var(--accent);
+
+  animation:
+    seedGrow 1.8s ease forwards;
+}
+
+@keyframes seedGrow {
+
+  0% {
+    transform: scale(.2);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(15);
+    opacity: 0;
+  }
+
+}
+
+.after-footer {
+  position: absolute;
+
+  left: 28px;
+  right: 28px;
+  bottom: 24px;
+
+  z-index: 30;
+
+  display: flex;
+  justify-content: space-between;
+
+  color:
+    rgba(233,234,223,.55);
+
+  font:
+    11px 'DM Mono',
+    monospace;
+
+  letter-spacing: .08em;
+}
+
+.after-footer button {
+  background: none;
+
+  border: 0;
+
+  color: inherit;
+
+  cursor: pointer;
+
+  font:
+    11px 'DM Mono',
+    monospace;
+}
+
+.after-footer button:hover {
+  color: var(--accent);
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:900px) {
+
+  .trace-intro {
+    display: block;
+  }
+
+  .trace-intro .tiny {
+    text-align: left;
+    margin-top: 25px;
+  }
+
+  .trace-board {
+    height: 62vh;
+  }
+
+  .after-photo-1 {
+    width: 45vw;
+  }
+
+  .after-photo-2 {
+    width: 42vw;
+  }
+
+  .after-photo-3 {
+    width: 50vw;
+    left: 25vw;
+  }
+
+}
+
+@media(max-width:560px) {
+
+  .trace-board {
+    min-height: 440px;
+  }
+
+  .photo-a {
+    width: 55%;
+    height: 42%;
+  }
+
+  .photo-b {
+    width: 48%;
+    height: 43%;
+  }
+
+  .photo-c {
+    width: 58%;
+    height: 39%;
+    left: 20%;
+  }
+
+  .after-content h2 {
+    font-size: 26vw;
+  }
+
+  .after-small {
+    padding: 0 30px;
+  }
+
+  .after-photo-1 {
+    width: 52vw;
+    height: 30vh;
+  }
+
+  .after-photo-2 {
+    width: 48vw;
+    height: 35vh;
+  }
+
+  .after-photo-3 {
+    width: 58vw;
+    height: 28vh;
+    left: 21vw;
+  }
+
+  .after-footer {
+    left: 16px;
+    right: 16px;
+  }
+
+}
