@@ -380,3 +380,326 @@ $('#submitAnswer').addEventListener('click', () => {
 applyI18n();
 renderQuestion();
 renderWall();
+/* =====================================================
+   05 / TRACE
+===================================================== */
+
+const traceBoard = document.getElementById('traceBoard');
+const traceCanvas = document.getElementById('traceCanvas');
+const clearTrace = document.getElementById('clearTrace');
+
+if (traceBoard && traceCanvas) {
+
+  const traceCtx = traceCanvas.getContext('2d');
+
+  let drawing = false;
+  let lastPoint = null;
+
+  function resizeTraceCanvas() {
+
+    const rect = traceBoard.getBoundingClientRect();
+
+    const dpr = Math.min(
+      window.devicePixelRatio || 1,
+      2
+    );
+
+    traceCanvas.width = rect.width * dpr;
+    traceCanvas.height = rect.height * dpr;
+
+    traceCanvas.style.width = rect.width + 'px';
+    traceCanvas.style.height = rect.height + 'px';
+
+    traceCtx.setTransform(
+      dpr,
+      0,
+      0,
+      dpr,
+      0,
+      0
+    );
+
+    traceCtx.lineCap = 'round';
+    traceCtx.lineJoin = 'round';
+  }
+
+  resizeTraceCanvas();
+
+  window.addEventListener(
+    'resize',
+    resizeTraceCanvas
+  );
+
+  function getTracePoint(e) {
+
+    const rect =
+      traceBoard.getBoundingClientRect();
+
+    return {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    };
+  }
+
+  traceBoard.addEventListener(
+    'pointerdown',
+    function(e) {
+
+      drawing = true;
+
+      lastPoint =
+        getTracePoint(e);
+
+      traceBoard.setPointerCapture(
+        e.pointerId
+      );
+
+    }
+  );
+
+  traceBoard.addEventListener(
+    'pointermove',
+    function(e) {
+
+      if (!drawing) return;
+
+      const point =
+        getTracePoint(e);
+
+      if (!lastPoint) {
+        lastPoint = point;
+        return;
+      }
+
+      /*
+       * 使用用户在 PICK 页面
+       * 选择的绿色
+       */
+
+      const chosenGreen =
+        getComputedStyle(
+          document.documentElement
+        )
+        .getPropertyValue('--accent')
+        .trim() || '#b9d38a';
+
+
+      /*
+       * 第一层：细线
+       */
+
+      traceCtx.globalAlpha = .9;
+
+      traceCtx.strokeStyle =
+        chosenGreen;
+
+      traceCtx.lineWidth = 1.5;
+
+      traceCtx.beginPath();
+
+      traceCtx.moveTo(
+        lastPoint.x,
+        lastPoint.y
+      );
+
+      traceCtx.lineTo(
+        point.x,
+        point.y
+      );
+
+      traceCtx.stroke();
+
+
+      /*
+       * 第二层：绿色光晕
+       */
+
+      traceCtx.globalAlpha = .12;
+
+      traceCtx.lineWidth = 18;
+
+      traceCtx.beginPath();
+
+      traceCtx.moveTo(
+        lastPoint.x,
+        lastPoint.y
+      );
+
+      traceCtx.lineTo(
+        point.x,
+        point.y
+      );
+
+      traceCtx.stroke();
+
+
+      lastPoint = point;
+
+    }
+  );
+
+  traceBoard.addEventListener(
+    'pointerup',
+    function() {
+
+      drawing = false;
+      lastPoint = null;
+
+    }
+  );
+
+  traceBoard.addEventListener(
+    'pointerleave',
+    function() {
+
+      if (!drawing) {
+        lastPoint = null;
+      }
+
+    }
+  );
+
+
+  /*
+   * CLEAR
+   */
+
+  if (clearTrace) {
+
+    clearTrace.addEventListener(
+      'click',
+      function() {
+
+        traceCtx.clearRect(
+          0,
+          0,
+          traceCanvas.clientWidth,
+          traceCanvas.clientHeight
+        );
+
+      }
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   06 / AFTERIMAGE
+===================================================== */
+
+const afterimage =
+  document.getElementById('afterimage');
+
+const growField =
+  document.getElementById('growField');
+
+const growBtn =
+  document.getElementById('growBtn');
+
+
+if (
+  afterimage &&
+  growField &&
+  growBtn
+) {
+
+  /*
+   * 生成一个绿色种子
+   */
+
+  function createSeed(
+    x,
+    y,
+    delay = 0
+  ) {
+
+    const seed =
+      document.createElement('span');
+
+    seed.className = 'seed';
+
+    seed.style.left =
+      x + 'px';
+
+    seed.style.top =
+      y + 'px';
+
+    seed.style.animationDelay =
+      delay + 'ms';
+
+
+    growField.appendChild(seed);
+
+
+    setTimeout(
+      function() {
+
+        seed.remove();
+
+      },
+      2200 + delay
+    );
+
+  }
+
+
+  /*
+   * 鼠标移动时
+   * 偶尔留下绿色
+   */
+
+  afterimage.addEventListener(
+    'pointermove',
+    function(e) {
+
+      if (Math.random() > .72) {
+
+        const rect =
+          afterimage.getBoundingClientRect();
+
+        createSeed(
+          e.clientX - rect.left,
+          e.clientY - rect.top
+        );
+
+      }
+
+    }
+  );
+
+
+  /*
+   * LET IT GROW
+   *
+   * 点击以后整个页面
+   * 开始出现绿色
+   */
+
+  growBtn.addEventListener(
+    'click',
+    function() {
+
+      const rect =
+        afterimage.getBoundingClientRect();
+
+
+      for (
+        let i = 0;
+        i < 30;
+        i++
+      ) {
+
+        createSeed(
+          Math.random() * rect.width,
+          Math.random() * rect.height,
+          i * 35
+        );
+
+      }
+
+    }
+  );
+
+}
