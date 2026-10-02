@@ -17,6 +17,8 @@
       <a href="#define">02 / DEFINE</a>
       <a href="#pick">03 / PICK</a>
       <a href="#dialogue">04 / TALK</a>
+      <a href="#trace">05 / TRACE</a>
+<a href="#afterimage">06 / AFTERIMAGE</a>
     </nav>
     <button type="button" id="langBtn" class="lang-btn" aria-label="Switch language">中文 / EN</button>
   </header>
@@ -140,7 +142,129 @@
         <div id="memoryWall" class="wall"></div>
       </div>
     </section>
+<!-- 05 / TRACE -->
+<section id="trace" class="section trace">
+  <div class="section-head">
+    <div>
+      <span class="num">05</span>
+      <span class="en">TRACE</span>
+    </div>
 
+    <h2>
+      绿色会留下<br>
+      <em>什么痕迹？</em>
+    </h2>
+  </div>
+
+  <div class="trace-intro">
+    <p>
+      把鼠标放进照片里。<br>
+      你看到的不是一张照片，<br>
+      而是一条被留下来的路径。
+    </p>
+
+    <p class="tiny">
+      MOVE / DRAW / DISCOVER<br>
+      移动 / 画出 / 发现
+    </p>
+  </div>
+
+  <div class="trace-board" id="traceBoard">
+
+    <div class="trace-photo photo-a">
+      <img src="images/green_3.jpg" alt="绿色照片">
+    </div>
+
+    <div class="trace-photo photo-b">
+      <img src="images/green_5.jpg" alt="绿色照片">
+    </div>
+
+    <div class="trace-photo photo-c">
+      <img src="images/green_7.jpg" alt="绿色照片">
+    </div>
+
+    <canvas id="traceCanvas"></canvas>
+
+    <div class="trace-center">
+      DRAW YOUR GREEN
+      <span>画出你的绿色</span>
+    </div>
+
+  </div>
+
+  <div class="trace-actions">
+
+    <button id="clearTrace" class="outline-btn">
+      CLEAR / 清除
+    </button>
+
+    <span>
+      THE CURSOR BECOMES A TRACE.
+    </span>
+
+  </div>
+</section>
+    <!-- 06 / AFTERIMAGE -->
+<section id="afterimage" class="afterimage">
+
+  <div class="after-bg"></div>
+
+  <div class="after-photo after-photo-1">
+    <img src="images/green_1.jpg" alt="">
+  </div>
+
+  <div class="after-photo after-photo-2">
+    <img src="images/green_4.jpg" alt="">
+  </div>
+
+  <div class="after-photo after-photo-3">
+    <img src="images/green_6.jpg" alt="">
+  </div>
+
+  <div class="after-content">
+
+    <p class="eyebrow">
+      06 / AFTERIMAGE
+    </p>
+
+    <p class="after-small">
+      你已经看过我的绿色。<br>
+      现在，屏幕里留下的是你的。
+    </p>
+
+    <h2>
+      GREEN<br>
+      <em>STAYS.</em>
+    </h2>
+
+    <p class="after-en">
+      You looked.<br>
+      You chose.<br>
+      You left a trace.
+    </p>
+
+    <button id="growBtn" class="grow-btn">
+      <span>LET IT GROW</span>
+      <i>↗</i>
+    </button>
+
+  </div>
+
+  <div id="growField" class="grow-field"></div>
+
+  <div class="after-footer">
+
+    <span>
+      MY GREEN / YOUR GREEN
+    </span>
+
+    <button data-scroll="#home">
+      START AGAIN ↺
+    </button>
+
+  </div>
+
+</section>
     <section class="archive">
       <div class="archive-inner">
         <span>MY GREEN ARCHIVE</span>
