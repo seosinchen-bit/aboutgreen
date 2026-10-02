@@ -23,7 +23,7 @@ a{text-decoration:none}
 .lang-btn{position:relative;z-index:130;background:rgba(17,23,15,.72);border:1px solid rgba(233,234,223,.4);padding:7px 12px;cursor:pointer;font:12px 'DM Mono',monospace;letter-spacing:.08em;opacity:1;color:var(--cream);transition:.25s;pointer-events:auto}
 .lang-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(17,23,15,.9)}
 .hero{height:100vh;min-height:680px;position:relative;display:flex;align-items:center;padding:0 7vw;overflow:hidden}
-.hero-image{position:absolute;inset:0;background:url("images/green_observe.jpg") center/cover;filter:saturate(.72) brightness(.56);transform:scale(1.04);transition:transform 1.5s ease,filter 1.5s}
+.hero-image{position:absolute;inset:0;background:url("green_observe.jpg") center/cover;filter:saturate(.72) brightness(.56);transform:scale(1.04);transition:transform 1.5s ease,filter 1.5s}
 .hero:hover .hero-image{transform:scale(1.08);filter:saturate(.9) brightness(.58)}
 .hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,9,5,.72),rgba(5,9,5,.18) 65%,rgba(5,9,5,.45))}
 .hero-content{position:relative;z-index:2;max-width:760px}.eyebrow,.tiny,.en,.num,.rec,.hero-note,.observe-foot,.wall-title,.credit,footer{font:11px 'DM Mono',monospace;letter-spacing:.08em}
