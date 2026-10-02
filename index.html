@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GREEN / 绿色 — A Personal Color Archive</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="cursor-dot"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#home">GREEN<span>/</span>绿色</a>
+    <nav>
+      <a href="#observe">01 / OBSERVE</a>
+      <a href="#define">02 / DEFINE</a>
+      <a href="#pick">03 / PICK</a>
+      <a href="#dialogue">04 / TALK</a>
+    </nav>
+    <button type="button" id="langBtn" class="lang-btn" aria-label="Switch language">中文 / EN</button>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-image"></div>
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <p class="eyebrow" data-i18n="heroEyebrow">A PERSONAL COLOR ARCHIVE / 个人绿色档案</p>
+        <h1 data-i18n="heroTitle" data-i18n-html="1">HOW DO<br><em>YOU</em> SEE<br>GREEN?</h1>
+        <p class="hero-sub" data-i18n="heroSub" data-i18n-html="1">我亲手拍下的绿色，不只是一种颜色。<br>它是一种观看、记忆和生活的方式。</p>
+        <button type="button" class="enter-btn" data-scroll="#observe">
+          <span data-i18n="enterBtn">ENTER / 进入</span><i>↓</i>
+        </button>
+      </div>
+      <div class="rec">REC <span></span> <b id="timer">00:00:00</b></div>
+      <div class="hero-note">MY GREEN / YOUR GREEN</div>
+    </section>
+
+    <section id="observe" class="section observe">
+      <div class="section-head">
+        <div><span class="num">01</span><span class="en">OBSERVE</span></div>
+        <h2 data-i18n="observeH2" data-i18n-html="1">先不要定义它。<br><em>Just look.</em></h2>
+      </div>
+
+      <div class="observe-stage">
+        <div class="observe-copy">
+          <p class="question" data-i18n="observeQ" data-i18n-html="1">你在生活中什么时候<br>第一次注意到绿色？</p>
+          <p class="tiny" data-i18n="observeHint">MOVE YOUR CURSOR / 移动你的鼠标</p>
+        </div>
+        <div class="magnify-wrap">
+          <img id="observeImage" src="images/green_observe.jpg" alt="竹林" />
+          <div id="magnifier"><span data-i18n="lookLabel">LOOK / 看</span></div>
+        </div>
+      </div>
+      <div class="observe-foot">
+        <span data-i18n="observeFootL">01 / BAMBOO</span>
+        <span data-i18n="observeFootR">THE IMAGE CHANGES WHEN YOU LOOK CLOSER.</span>
+      </div>
+    </section>
+
+    <section id="define" class="section define">
+      <div class="section-head">
+        <div><span class="num">02</span><span class="en">DEFINE</span></div>
+        <h2 data-i18n="defineH2" data-i18n-html="1">你觉得绿色是<br><em>哪一种感觉？</em></h2>
+      </div>
+
+      <div class="mood-grid">
+        <button type="button" class="mood" data-mode="soft"><b>SOFT</b><span data-i18n="moodSoft">柔软</span><i data-i18n="moodSoftI">像雨后的叶子</i></button>
+        <button type="button" class="mood" data-mode="wild"><b>WILD</b><span data-i18n="moodWild">野</span><i data-i18n="moodWildI">没有被整理过的绿色</i></button>
+        <button type="button" class="mood" data-mode="quiet"><b>QUIET</b><span data-i18n="moodQuiet">安静</span><i data-i18n="moodQuietI">一个人站在树之间</i></button>
+        <button type="button" class="mood" data-mode="heavy"><b>HEAVY</b><span data-i18n="moodHeavy">沉</span><i data-i18n="moodHeavyI">潮湿、深、靠近黑色</i></button>
+      </div>
+
+      <div class="define-image">
+        <img id="defineImage" src="images/green_define.jpg" alt="湖边的绿色" />
+        <div class="mode-label" id="modeLabel" data-i18n="modeLabel">CHOOSE A FEELING / 选择一种感觉</div>
+      </div>
+    </section>
+
+    <section id="pick" class="section pick">
+      <div class="section-head">
+        <div><span class="num">03</span><span class="en">PICK</span></div>
+        <h2 data-i18n="pickH2" data-i18n-html="1">先别带走颜色。<br><em>先问问自己。</em></h2>
+      </div>
+
+      <p class="pick-lead" data-i18n="pickLead">绿色不会自己跳出来认领你。回答几个很短的问题，一种绿色会慢慢靠近。</p>
+
+      <div class="quiz" id="quizPanel">
+        <div class="quiz-meta">
+          <span id="quizStep">01 / 04</span>
+          <span class="quiz-bar"><i id="quizBar"></i></span>
+        </div>
+        <p class="quiz-q" id="quizQuestion"></p>
+        <div class="quiz-options" id="quizOptions"></div>
+      </div>
+
+      <div class="quiz-result" id="quizResult" hidden>
+        <div class="result-photo">
+          <img id="resultPhoto" src="images/green_quiz_bamboo.jpg" alt="" />
+          <div class="result-swatch" id="resultSwatch"></div>
+        </div>
+        <div class="result-copy">
+          <p class="tiny" data-i18n="resultKicker">A GREEN FOUND YOU / 一种绿色找到了你</p>
+          <h3 id="resultName">竹雾</h3>
+          <div class="hex" id="resultHex">#7A9480</div>
+          <p id="resultMeaning" class="result-meaning"></p>
+          <div class="result-actions">
+            <button type="button" id="keepColor" class="outline-btn" data-i18n="keepGreen">KEEP THIS GREEN / 留下它</button>
+            <button type="button" id="retryQuiz" class="ghost-btn" data-i18n="retryQuiz">再测一次</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="picked-result" id="pickedResult">
+        <span data-i18n="yourGreenLabel">YOUR GREEN / 你的绿色</span>
+        <strong id="pickedHex">—</strong>
+      </div>
+    </section>
+
+    <section id="dialogue" class="section dialogue">
+      <div class="section-head">
+        <div><span class="num">04</span><span class="en">TALK</span></div>
+        <h2 data-i18n="talkH2" data-i18n-html="1">现在轮到你了。<br><em>Tell me your green.</em></h2>
+      </div>
+
+      <div class="question-card">
+        <p class="big-question" data-i18n="talkQ" data-i18n-html="1">如果绿色是一种记忆，<br>你的绿色会是什么？</p>
+        <p class="en-question" data-i18n="talkQEn">If green were a memory, what would yours be?</p>
+        <textarea id="greenAnswer" placeholder="写下一句话 / Write one sentence..."></textarea>
+        <div class="answer-tools">
+          <span id="charCount">0 / 120</span>
+          <button type="button" id="submitAnswer" class="send-btn" data-i18n="leaveMemory">LEAVE A MEMORY →</button>
+        </div>
+        <div id="answerDisplay" class="answer-display"></div>
+      </div>
+
+      <div class="memory-wall">
+        <div class="wall-title" data-i18n="wallTitle">OTHER PEOPLE'S GREEN / 别人的绿色</div>
+        <div id="memoryWall" class="wall"></div>
+      </div>
+    </section>
+
+    <section class="archive">
+      <div class="archive-inner">
+        <span>MY GREEN ARCHIVE</span>
+        <h2 data-i18n="archiveH2" data-i18n-html="1">7 photographs.<br>One color.<br>Many ways of seeing.</h2>
+        <div class="archive-grid">
+          <img src="images/green_1.jpg" alt="">
+          <img src="images/green_2.jpg" alt="">
+          <img src="images/green_3.jpg" alt="">
+          <img src="images/green_4.jpg" alt="">
+          <img src="images/green_5.jpg" alt="">
+          <img src="images/green_6.jpg" alt="">
+          <img src="images/green_7.jpg" alt="">
+        </div>
+        <p class="credit" data-i18n="credit" data-i18n-html="1">ALL PHOTOGRAPHS / PERSONAL ARCHIVE<br>所有照片均由我亲自拍摄</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>GREEN / 绿色</span>
+    <span data-i18n="footerMid">MADE FROM THINGS I NOTICED.</span>
+    <span>© 2026</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
