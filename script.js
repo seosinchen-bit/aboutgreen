@@ -1293,3 +1293,967 @@ if (
 applyI18n();
 renderQuestion();
 renderWall();
+/* =========================================================
+   GREEN EXPERIENCE — INTERACTION ADD-ON
+   只添加效果，不删除原有功能
+========================================================= */
+
+(function () {
+
+  'use strict';
+
+
+  /* =====================================================
+     01 / GREEN CURSOR
+  ===================================================== */
+
+  const cursor =
+    document.createElement('div');
+
+  cursor.className =
+    'green-add-cursor';
+
+  document.body.appendChild(cursor);
+
+  document.body.classList.add(
+    'green-add-active'
+  );
+
+
+  document.addEventListener(
+    'mousemove',
+    function (e) {
+
+      cursor.style.left =
+        e.clientX + 'px';
+
+      cursor.style.top =
+        e.clientY + 'px';
+
+    }
+  );
+
+
+  /* =====================================================
+     02 / DV GLITCH
+  ===================================================== */
+
+  const glitch =
+    document.createElement('div');
+
+  glitch.className =
+    'green-dv-glitch';
+
+  document.body.appendChild(glitch);
+
+
+  function triggerGlitch() {
+
+    glitch.classList.remove('active');
+
+    void glitch.offsetWidth;
+
+    glitch.classList.add('active');
+
+  }
+
+
+  /* 每隔一段时间非常轻地闪一次 */
+
+  setInterval(
+    function () {
+
+      if (
+        Math.random() > .68
+      ) {
+
+        triggerGlitch();
+
+      }
+
+    },
+    7000
+  );
+
+
+  /* =====================================================
+     03 / GREEN DETECTOR
+  ===================================================== */
+
+  const detector =
+    document.createElement('div');
+
+  detector.className =
+    'green-detector';
+
+  detector.innerHTML = `
+
+    <div class="green-detector-top">
+
+      <span class="green-detector-label">
+        GREEN DETECTOR
+      </span>
+
+      <span
+        class="green-detector-value"
+        id="greenDetectorValue"
+      >
+        00%
+      </span>
+
+    </div>
+
+    <div class="green-detector-bar">
+      <div
+        class="green-detector-fill"
+        id="greenDetectorFill"
+      ></div>
+    </div>
+
+    <div
+      class="green-detector-message"
+      id="greenDetectorMessage"
+    >
+      MOVE TO FIND GREEN
+    </div>
+
+  `;
+
+  document.body.appendChild(
+    detector
+  );
+
+
+  const detectorValue =
+    document.getElementById(
+      'greenDetectorValue'
+    );
+
+  const detectorFill =
+    document.getElementById(
+      'greenDetectorFill'
+    );
+
+  const detectorMessage =
+    document.getElementById(
+      'greenDetectorMessage'
+    );
+
+
+  function calculateGreen(
+    x,
+    y
+  ) {
+
+    /*
+      根据鼠标位置做一个视觉上的
+      “绿色探测器”。
+
+      不读取图片像素，
+      所以不会破坏原来的图片。
+    */
+
+    const width =
+      window.innerWidth;
+
+    const height =
+      window.innerHeight;
+
+    const horizontal =
+      1 -
+      Math.abs(
+        x - width * .5
+      ) /
+      (width * .5);
+
+    const vertical =
+      1 -
+      Math.abs(
+        y - height * .5
+      ) /
+      (height * .5);
+
+    let value =
+      (
+        horizontal * .55 +
+        vertical * .25 +
+        Math.random() * .2
+      ) * 100;
+
+
+    value =
+      Math.max(
+        4,
+        Math.min(
+          98,
+          value
+        )
+      );
+
+
+    return Math.round(
+      value
+    );
+
+  }
+
+
+  document.addEventListener(
+    'mousemove',
+    function (e) {
+
+      const value =
+        calculateGreen(
+          e.clientX,
+          e.clientY
+        );
+
+
+      detectorValue.textContent =
+        String(value).padStart(
+          2,
+          '0'
+        ) + '%';
+
+
+      detectorFill.style.width =
+        value + '%';
+
+
+      if (value > 85) {
+
+        detectorMessage.textContent =
+          'GREEN FOUND / 找到了';
+
+        detector.classList.add(
+          'visible'
+        );
+
+      }
+
+      else if (value > 55) {
+
+        detectorMessage.textContent =
+          'GETTING CLOSER / 靠近一点';
+
+        detector.classList.add(
+          'visible'
+        );
+
+      }
+
+      else {
+
+        detectorMessage.textContent =
+          'MOVE TO FIND GREEN';
+
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     04 / OBSERVE FOUND
+  ===================================================== */
+
+  const found =
+    document.createElement('div');
+
+  found.className =
+    'green-found-message';
+
+  found.innerHTML =
+    'YOU FOUND GREEN.<br><small>你找到了绿色。</small>';
+
+  document.body.appendChild(
+    found
+  );
+
+
+  let foundCooldown =
+    false;
+
+
+  document.addEventListener(
+    'mousemove',
+    function (e) {
+
+      if (foundCooldown) {
+        return;
+      }
+
+      const value =
+        calculateGreen(
+          e.clientX,
+          e.clientY
+        );
+
+
+      if (value >= 94) {
+
+        foundCooldown =
+          true;
+
+        found.classList.add(
+          'show'
+        );
+
+        triggerGlitch();
+
+
+        setTimeout(
+          function () {
+
+            found.classList.remove(
+              'show'
+            );
+
+          },
+          1100
+        );
+
+
+        setTimeout(
+          function () {
+
+            foundCooldown =
+              false;
+
+          },
+          3500
+        );
+
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     05 / PICK — ANALYSIS
+  ===================================================== */
+
+  const quiz =
+    document.getElementById(
+      'quizPanel'
+    );
+
+
+  if (quiz) {
+
+    const options =
+      quiz.querySelector(
+        '#quizOptions'
+      );
+
+
+    if (options) {
+
+      options.addEventListener(
+        'click',
+        function () {
+
+          showGreenAnalysis();
+
+        }
+      );
+
+    }
+
+  }
+
+
+  function showGreenAnalysis() {
+
+    if (
+      document.querySelector(
+        '.green-analysis'
+      )
+    ) {
+      return;
+    }
+
+
+    const overlay =
+      document.createElement('div');
+
+    overlay.className =
+      'green-analysis';
+
+
+    overlay.innerHTML = `
+
+      <div class="green-analysis-inner">
+
+        <div class="green-analysis-title">
+          ANALYZING YOUR GREEN...
+        </div>
+
+        <div class="green-analysis-bar">
+
+          <div
+            class="green-analysis-fill"
+          ></div>
+
+        </div>
+
+        <div
+          class="green-analysis-percent"
+        >
+          00%
+        </div>
+
+      </div>
+
+    `;
+
+
+    document.body.appendChild(
+      overlay
+    );
+
+
+    const fill =
+      overlay.querySelector(
+        '.green-analysis-fill'
+      );
+
+    const percent =
+      overlay.querySelector(
+        '.green-analysis-percent'
+      );
+
+
+    requestAnimationFrame(
+      function () {
+
+        overlay.classList.add(
+          'show'
+        );
+
+        fill.style.width =
+          '100%';
+
+      }
+    );
+
+
+    let number =
+      0;
+
+
+    const timer =
+      setInterval(
+        function () {
+
+          number +=
+            Math.ceil(
+              Math.random() * 13
+            );
+
+          if (number >= 100) {
+
+            number =
+              100;
+
+            clearInterval(
+              timer
+            );
+
+          }
+
+          percent.textContent =
+            String(number)
+              .padStart(2, '0') + '%';
+
+
+        },
+        70
+      );
+
+
+    setTimeout(
+      function () {
+
+        overlay.classList.remove(
+          'show'
+        );
+
+
+        setTimeout(
+          function () {
+
+            overlay.remove();
+
+          },
+          350
+        );
+
+
+      },
+      1150
+    );
+
+  }
+
+
+  /* =====================================================
+     06 / TALK — MEMORY CARD
+  ===================================================== */
+
+  const submit =
+    document.getElementById(
+      'submitAnswer'
+    );
+
+  const textarea =
+    document.getElementById(
+      'greenAnswer'
+    );
+
+
+  if (
+    submit &&
+    textarea
+  ) {
+
+    submit.addEventListener(
+      'click',
+      function () {
+
+        const text =
+          textarea.value.trim();
+
+
+        if (!text) {
+          return;
+        }
+
+
+        setTimeout(
+          function () {
+
+            createMemoryCard(
+              text
+            );
+
+          },
+          120
+        );
+
+      }
+    );
+
+  }
+
+
+  function createMemoryCard(
+    text
+  ) {
+
+    const old =
+      document.querySelector(
+        '.green-memory-card'
+      );
+
+
+    if (old) {
+      old.remove();
+    }
+
+
+    const card =
+      document.createElement(
+        'div'
+      );
+
+
+    card.className =
+      'green-memory-card';
+
+
+    const date =
+      new Date()
+        .toLocaleDateString();
+
+
+    card.innerHTML = `
+
+      <div class="green-memory-card-kicker">
+        YOUR GREEN MEMORY
+      </div>
+
+      <div class="green-memory-card-text">
+        “ ${escapeHTML(text)} ”
+      </div>
+
+      <div class="green-memory-card-footer">
+
+        <span>
+          MY GREEN / YOUR GREEN
+        </span>
+
+        <span>
+          ${date}
+        </span>
+
+      </div>
+
+    `;
+
+
+    document.body.appendChild(
+      card
+    );
+
+
+    requestAnimationFrame(
+      function () {
+
+        card.classList.add(
+          'show'
+        );
+
+      }
+    );
+
+
+    setTimeout(
+      function () {
+
+        card.classList.remove(
+          'show'
+        );
+
+
+        setTimeout(
+          function () {
+
+            card.remove();
+
+          },
+          600
+        );
+
+
+      },
+      3600
+    );
+
+  }
+
+
+  function escapeHTML(
+    text
+  ) {
+
+    return text.replace(
+      /[&<>"']/g,
+      function (char) {
+
+        const map = {
+
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+
+        };
+
+        return map[char];
+
+      }
+    );
+
+  }
+
+
+  /* =====================================================
+     07 / TRACE — LITTLE SPROUTS
+  ===================================================== */
+
+  const trace =
+    document.getElementById(
+      'traceBoard'
+    );
+
+
+  if (trace) {
+
+    trace.addEventListener(
+      'pointermove',
+      function (e) {
+
+        if (
+          Math.random() > .93
+        ) {
+
+          createSprout(
+            e.clientX,
+            e.clientY
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  function createSprout(
+    x,
+    y
+  ) {
+
+    const sprout =
+      document.createElement(
+        'span'
+      );
+
+
+    sprout.className =
+      'green-sprout';
+
+
+    sprout.style.left =
+      x + 'px';
+
+    sprout.style.top =
+      y + 'px';
+
+
+    sprout.style.transform =
+      `translate(-50%, -50%)
+       rotate(${Math.random() * 80 - 40}deg)
+       scale(0)`;
+
+
+    document.body.appendChild(
+      sprout
+    );
+
+
+    setTimeout(
+      function () {
+
+        sprout.remove();
+
+      },
+      1900
+    );
+
+  }
+
+
+  /* =====================================================
+     08 / AFTERIMAGE — LET IT GROW
+  ===================================================== */
+
+  const grow =
+    document.getElementById(
+      'growBtn'
+    );
+
+  const after =
+    document.getElementById(
+      'afterimage'
+    );
+
+
+  if (
+    grow &&
+    after
+  ) {
+
+    grow.addEventListener(
+      'click',
+      function () {
+
+        growAfterimage();
+
+      }
+    );
+
+  }
+
+
+  function growAfterimage() {
+
+    const rect =
+      after.getBoundingClientRect();
+
+
+    for (
+      let i = 0;
+      i < 48;
+      i++
+    ) {
+
+      setTimeout(
+        function () {
+
+          createAfterParticle(
+            rect
+          );
+
+        },
+        i * 35
+      );
+
+    }
+
+
+    triggerGlitch();
+
+  }
+
+
+  function createAfterParticle(
+    rect
+  ) {
+
+    const particle =
+      document.createElement(
+        'span'
+      );
+
+
+    particle.className =
+      'green-after-particle';
+
+
+    particle.style.left =
+      Math.random() *
+      rect.width +
+      'px';
+
+
+    particle.style.top =
+      (
+        rect.height *
+        (.55 + Math.random() * .35)
+      ) + 'px';
+
+
+    particle.style.setProperty(
+      '--angle',
+      (
+        Math.random() * 80 -
+        40
+      ) + 'deg'
+    );
+
+
+    after.appendChild(
+      particle
+    );
+
+
+    setTimeout(
+      function () {
+
+        particle.remove();
+
+      },
+      3000
+    );
+
+  }
+
+
+  /* =====================================================
+     09 / ARCHIVE — IMAGE MAGNET
+  ===================================================== */
+
+  const archiveImages =
+    document.querySelectorAll(
+      '.archive-grid img'
+    );
+
+
+  archiveImages.forEach(
+    function (img) {
+
+      img.addEventListener(
+        'mousemove',
+        function (e) {
+
+          const rect =
+            img.getBoundingClientRect();
+
+
+          const x =
+            (
+              e.clientX -
+              rect.left
+            ) /
+            rect.width -
+            .5;
+
+
+          const y =
+            (
+              e.clientY -
+              rect.top
+            ) /
+            rect.height -
+            .5;
+
+
+          img.style.transform =
+            `
+            perspective(700px)
+            rotateY(${x * 5}deg)
+            rotateX(${y * -5}deg)
+            scale(1.04)
+            `;
+
+        }
+      );
+
+
+      img.addEventListener(
+        'mouseleave',
+        function () {
+
+          img.style.transform =
+            '';
+
+        }
+      );
+
+    }
+  );
+
+
+  /* =====================================================
+     10 / RANDOM DV MOMENT
+  ===================================================== */
+
+  setTimeout(
+    function randomDV() {
+
+      if (
+        Math.random() > .35
+      ) {
+
+        triggerGlitch();
+
+      }
+
+
+      setTimeout(
+        randomDV,
+        9000 +
+        Math.random() * 11000
+      );
+
+    },
+    6000
+  );
+
+
+})();
